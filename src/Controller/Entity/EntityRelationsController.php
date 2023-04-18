@@ -47,7 +47,14 @@ final class EntityRelationsController extends ElementRelationsBaseController
      */
     public function getPersons(Request $request, Response $response, array $args): Response
     {
-        // @TODO
+        /** @var Entity|null $entity */
+        $entity = $this->entityManager
+            ->getRepository(EntityQueryController::getEntityClassName())
+            ->find($args[EntityQueryController::getEntityIdName()]);
+
+        $persons = $entity?->getPersons() ?? [];
+
+        return $this->getElements($response, $entity, PersonQueryController::getEntitiesTag(), $persons);
     }
 
     /**
@@ -62,7 +69,12 @@ final class EntityRelationsController extends ElementRelationsBaseController
      */
     public function operationPerson(Request $request, Response $response, array $args): Response
     {
-        // @TODO
+        return $this->operationRelatedElements(
+            $request,
+            $response,
+            $args,
+            PersonQueryController::getEntityClassName()
+        );
     }
 
     /**
@@ -75,7 +87,14 @@ final class EntityRelationsController extends ElementRelationsBaseController
      */
     public function getProducts(Request $request, Response $response, array $args): Response
     {
-        // @TODO
+        /** @var Entity|null $entity */
+        $entity = $this->entityManager
+            ->getRepository(EntityQueryController::getEntityClassName())
+            ->find($args[EntityQueryController::getEntityIdName()]);
+
+        $products = $entity?->getProducts() ?? [];
+
+        return $this->getElements($response, $entity, ProductQueryController::getEntitiesTag(), $products);
     }
 
     /**
@@ -90,6 +109,11 @@ final class EntityRelationsController extends ElementRelationsBaseController
      */
     public function operationProduct(Request $request, Response $response, array $args): Response
     {
-        // @TODO
+        return $this->operationRelatedElements(
+            $request,
+            $response,
+            $args,
+            ProductQueryController::getEntityClassName()
+        );
     }
 }
